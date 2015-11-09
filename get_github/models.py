@@ -3,6 +3,7 @@ from get_github.connect import G
 
 
 class GithubUser(models.Model):
+    avatar = models.URLField(null=True)
     blog = models.URLField(null=True)
     company = models.CharField(null=True, max_length=255)
     create_at = models.DateTimeField(null=True)
@@ -19,6 +20,7 @@ class GithubUser(models.Model):
 
     def refresh_from_github(self):
         user_data = G.get_user(self.login)
+        self.avatar = user_data.avatar_url
         self.blog = user_data.blog
         self.company = user_data.company
         self.create_at = user_data.created_at
@@ -54,5 +56,5 @@ class GithubRepo(models.Model):
     stargazers_count = models.IntegerField(default=0)
     watchers_count = models.IntegerField(default=0)
     forks_count = models.IntegerField(default=0)
-    create_at = models.DateTimeField()
-    pushed_at = models.DateTimeField()
+    create_at = models.DateTimeField(null=True)
+    pushed_at = models.DateTimeField(null=True)

@@ -5,7 +5,6 @@ import get_github.views as views
 
 
 class FindMethodTests(TestCase):
-    def test_find_following(self):
-        views.add_user('wuminorb')
-        following = G.get_user('wuminorb').following
-        self.assertEqual(GithubUser.objects.count(), following+1)
+    def test_refresh_user(self):
+        views.refresh_user('wuminorb')
+        self.assertEqual(GithubUser.objects.count(), 1)

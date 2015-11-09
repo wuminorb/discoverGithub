@@ -1,2 +1,3 @@
 django
 pyGithub
+django-bootstrap3
