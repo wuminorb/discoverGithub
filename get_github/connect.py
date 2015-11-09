@@ -7,7 +7,7 @@ def connect():
         token = token_file.read()
     finally:
         token_file.close()
-    g = Github(token)
+    g = Github(token, per_page=100)
     return g
 
 G = connect()
