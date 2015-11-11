@@ -8,7 +8,7 @@
 
 {% block bootstrap3_content %}
     <div class="container">
-        <h1 class="page-header">{{ user.login }} <a href="" onclick="refresh('{% url 'refresh_user' user.login %}')"><i class="fa fa-refresh"></i></a></h1>
+        <h1 class="page-header">{{ user.login }} <button class="btn btn-default" onclick="refresh('{% url 'refresh_user' user.login %}')"><i class="fa fa-refresh"></i></button></h1>
 
         <div class="row">
             <div class="col-md-3">
@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="panel panel-default">
-                            <div class="panel-heading">following({{ user.following_count }}) <a href="" onclick="refresh('{% url 'refresh_user_following' user.login %}')"><i class="fa fa-refresh"></i></a></div>
+                            <div class="panel-heading">following({{ user.following_count }}) <button class="btn btn-default" onclick="refresh('{% url 'refresh_user_following' user.login %}')"><i class="fa fa-refresh"></i></button></div>
                             <ul class="list-group">
                                 {% for following in user.following.all %}
                                     <li class="list-group-item"><a href="{% url 'user_detail' following.login %}">{{ following.login }}</a></li>
@@ -30,13 +30,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="panel panel-default">
-                            <div class="panel-heading">starred <i class="fa fa-refresh"></i></div>
+                            <div class="panel-heading">starred <button class="btn btn-default" onclick="refresh('{% url 'refresh_user_starred' user.login %}')"><i class="fa fa-refresh"></i></button></div>
                             <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
+                                {% for starred in user.githubrepo_set.all|dictsortreversed:"stargazers_count" %}
+                                    <li class="list-group-item">
+                                        <a href="">{{ starred.full_name }}</a>
+                                        <span class="pull-right">{{ starred.stargazers_count }}<i class="fa fa-star"></i></span>
+                                    </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>

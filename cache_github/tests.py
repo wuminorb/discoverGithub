@@ -7,4 +7,4 @@ import cache_github.views as views
 class FindMethodTests(TestCase):
     def test_refresh_user(self):
         views.refresh_user(None, 'wuminorb')
-        self.assertEqual(GithubUser.objects.count(), 1)
+        self.assertEqual(GithubUser.objects.filter(login='wuminorb').count(), 1)

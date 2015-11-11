@@ -1,5 +1,10 @@
 function refresh(url) {
-    $.get(url, function (data, status) {
-        location.reload();
+    $.ajax({
+        url: url,
+        success: function (data) {
+            alert(data);
+            location.reload();
+        },
+        timeout:3600000
     });
 }
