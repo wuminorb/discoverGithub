@@ -5,7 +5,10 @@
 {% block bootstrap3_content %}
     <div class="container">
         <div class="row">
-            <h1 class="page-header">{{ repo.full_name }}</h1>
+            <h1 class="page-header">{{ repo.full_name }} <a href="https://github.com/{{ repo.full_name }}"><i class="fa fa-github"></i></a></h1>
+            <div class="col-md-12">
+                {{ repo.description }}
+            </div>
         </div>
     </div>
 {% endblock %}

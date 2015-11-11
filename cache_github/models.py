@@ -21,15 +21,15 @@ class GithubUser(models.Model):
     def __str__(self):
         return self.login
 
-    def get_data(self, data):
+    def get_data(self, data=None):
         if data:
             self.data = data
-            return self.data
-        
+
         if not hasattr(self, 'data'):
             self.data = G.get_user(self.login)
-            return self.data
-        
+
+        return self.data
+
     def refresh_from_github(self, data=None):
         self.data = self.get_data(data)
         self.avatar = self.data.avatar_url
@@ -46,19 +46,25 @@ class GithubUser(models.Model):
         self.following_count = self.data.following
         self.save()
 
-    def refresh_following(self, data=None):
+    def refresh_following(self, data=None, force=False):
         self.data = self.get_data(data)
-
         followings = self.data.get_following()
+        if not force:
+            followings = followings.get_page(0)
+
         for following in followings:
             self.following.add(get_user_from_db(following.login))
 
-    def refresh_starred(self, data=None):
+    def refresh_starred(self, data=None, force=False):
         self.data = self.get_data(data)
-        for starred in self.data.get_starred():
+        starred_repose = self.data.get_starred()
+        if not force:
+            starred_repose = starred_repose.get_page(0)
+
+        for starred in starred_repose:
             repo = GithubRepo()
             repo.refresh_from_github(starred)
-            self.githubrepo_set.add(repo)
+            self.starred.add(repo)
 
 
 class GithubRepo(models.Model):
@@ -69,19 +75,19 @@ class GithubRepo(models.Model):
     forks_count = models.IntegerField(default=0)
     create_at = models.DateTimeField(null=True)
     pushed_at = models.DateTimeField(null=True)
-    stargazers = models.ManyToManyField(GithubUser)
+    stargazers = models.ManyToManyField(GithubUser, related_name='starred')
 
     def __str__(self):
         return self.full_name
 
-    def get_data(self, data):
+    def get_data(self, data=None):
         if data:
             self.data = data
-            return self.data
 
         if not hasattr(self, 'data'):
             self.data = G.get_repo(self.full_name)
-            return self.data
+
+        return self.data
 
     def refresh_from_github(self, data=None):
         self.data = self.get_data(data)

@@ -45,7 +45,7 @@
                                         class="fa fa-refresh"></i></button>
                             </div>
                             <ul class="list-group">
-                                {% for starred in user.githubrepo_set.all|dictsortreversed:"stargazers_count" %}
+                                {% for starred in user.starred.all|dictsortreversed:"stargazers_count" %}
                                     <li class="list-group-item">
                                         <a href="{% url 'repo_detail' starred.full_name %}">{{ starred.full_name }}</a>
                                         <span class="pull-right">{{ starred.stargazers_count }}<i

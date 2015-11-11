@@ -7,6 +7,7 @@ urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^github/', include('cache_github.urls')),
+    url(r'^recommend/', include('recommend.urls')),
 )
 
 if settings.DEBUG:
