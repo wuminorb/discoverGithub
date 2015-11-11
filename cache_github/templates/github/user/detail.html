@@ -47,7 +47,7 @@
                             <ul class="list-group">
                                 {% for starred in user.githubrepo_set.all|dictsortreversed:"stargazers_count" %}
                                     <li class="list-group-item">
-                                        <a href="">{{ starred.full_name }}</a>
+                                        <a href="{% url 'repo_detail' starred.full_name %}">{{ starred.full_name }}</a>
                                         <span class="pull-right">{{ starred.stargazers_count }}<i
                                                 class="fa fa-star"></i></span>
                                     </li>

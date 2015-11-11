@@ -80,7 +80,7 @@ class GithubRepo(models.Model):
             return self.data
 
         if not hasattr(self, 'data'):
-            self.data = G.get_user(self.login)
+            self.data = G.get_repo(self.full_name)
             return self.data
 
     def refresh_from_github(self, data=None):
