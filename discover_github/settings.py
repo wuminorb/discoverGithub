@@ -23,6 +23,9 @@ SECRET_KEY = '48^mox#-tl5!k%#ogjnhnaf%deeztug_fp(ozncpjf%x+^7l&c'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
+TEMPLATE_DIRS = (
+    BASE_DIR+'/templates/',
+)
 
 ALLOWED_HOSTS = []
 
@@ -37,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
-    'get_github',
+    'cache_github',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,4 +86,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-

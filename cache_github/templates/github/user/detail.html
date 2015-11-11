@@ -1,9 +1,14 @@
-{% extends 'bootstrap3/bootstrap3.html' %}
+{% extends 'base.html' %}
 {% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block extra_head %}
+    <script type="text/javascript" src="{% static 'github/user/detail.js' %}"></script>
+{% endblock %}
 
 {% block bootstrap3_content %}
     <div class="container">
-        <h1 class="page-header">{{ user.login }}</h1>
+        <h1 class="page-header">{{ user.login }} <a href="" onclick="refresh('{% url 'refresh_user' user.login %}')"><i class="fa fa-refresh"></i></a></h1>
 
         <div class="row">
             <div class="col-md-3">
@@ -15,17 +20,31 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="panel panel-default">
-                            <div class="panel-heading">following</div>
+                            <div class="panel-heading">following({{ user.following_count }}) <a href="" onclick="refresh('{% url 'refresh_user_following' user.login %}')"><i class="fa fa-refresh"></i></a></div>
                             <ul class="list-group">
                                 {% for following in user.following.all %}
-                                    <li class="list-group-item">{{ following.login }}</li>
+                                    <li class="list-group-item"><a href="{% url 'user_detail' following.login %}">{{ following.login }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="panel panel-default">
-                            <div class="panel-heading">starred</div>
+                            <div class="panel-heading">starred <i class="fa fa-refresh"></i></div>
+                            <ul class="list-group">
+                                <li class="list-group-item">Cras justo odio</li>
+                                <li class="list-group-item">Dapibus ac facilisis in</li>
+                                <li class="list-group-item">Morbi leo risus</li>
+                                <li class="list-group-item">Porta ac consectetur ac</li>
+                                <li class="list-group-item">Vestibulum at eros</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">repositories <i class="fa fa-refresh"></i></div>
                             <ul class="list-group">
                                 <li class="list-group-item">Cras justo odio</li>
                                 <li class="list-group-item">Dapibus ac facilisis in</li>
@@ -37,19 +56,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="panel panel-default">
-                            <div class="panel-heading">repositories</div>
-                            <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">contributed to</div>
+                            <div class="panel-heading">contributed to <i class="fa fa-refresh"></i></div>
                             <ul class="list-group">
                                 <li class="list-group-item">Cras justo odio</li>
                                 <li class="list-group-item">Dapibus ac facilisis in</li>

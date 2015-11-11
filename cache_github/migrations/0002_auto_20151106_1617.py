@@ -9,7 +9,7 @@ from django.utils.timezone import utc
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('get_github', '0001_initial'),
+        ('cache_github', '0001_initial'),
     ]
 
     operations = [

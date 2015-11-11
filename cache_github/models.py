@@ -1,5 +1,5 @@
 from django.db import models
-from get_github.connect import G
+from cache_github.connect import G
 
 
 class GithubUser(models.Model):
@@ -18,6 +18,9 @@ class GithubUser(models.Model):
     public_repo_num = models.IntegerField(default=0)
     update_at = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return self.login
+
     def refresh_from_github(self):
         user_data = G.get_user(self.login)
         self.avatar = user_data.avatar_url
@@ -33,21 +36,15 @@ class GithubUser(models.Model):
         self.followers_count = user_data.followers
         self.following_count = user_data.following
         self.user_data = user_data
+        self.save()
 
     def refresh_following(self):
-        if not self.user_data:
-            self.user_data = G.get_user(self.login)
+        if not hasattr(self, 'user_data'):
+            self.refresh_from_github()
 
         followings = self.user_data.get_following()
         for following in followings:
-            query_set = GithubUser.objects.filter(login=following.login)
-            if query_set.exists():
-                following_user = query_set.first()
-            else:
-                following_user = GithubUser()
-                following_user.login = following.login
-                following_user.save()
-            self.following.add(following_user)
+            self.following.add(get_user_from_db(following.login))
 
 
 class GithubRepo(models.Model):
@@ -58,3 +55,15 @@ class GithubRepo(models.Model):
     forks_count = models.IntegerField(default=0)
     create_at = models.DateTimeField(null=True)
     pushed_at = models.DateTimeField(null=True)
+    stargazers = models.ManyToManyField(GithubUser)
+
+
+def get_user_from_db(login):
+    query_set = GithubUser.objects.filter(login=login)
+    if query_set.exists():
+        return query_set.first()
+    else:
+        user = GithubUser()
+        user.login = login
+        user.save()
+        return user

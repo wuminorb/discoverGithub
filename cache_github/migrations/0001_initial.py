@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             name='GithubUser',
             fields=[
                 ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
-                ('following', models.ManyToManyField(to='get_github.GithubUser')),
+                ('following', models.ManyToManyField(to='cache_github.GithubUser')),
             ],
         ),
     ]

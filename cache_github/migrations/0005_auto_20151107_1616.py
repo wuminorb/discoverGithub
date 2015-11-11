@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('get_github', '0004_auto_20151107_1529'),
+        ('cache_github', '0004_auto_20151107_1529'),
     ]
 
     operations = [
