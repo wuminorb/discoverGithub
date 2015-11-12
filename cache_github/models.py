@@ -94,9 +94,11 @@ class GithubRepo(models.Model):
         self.data = self.get_data(data)
         self.full_name = self.data.full_name
         self.forks_count = self.data.forks_count
-        self.create_at = make_aware(self.data.created_at)
+        if self.data.created_at is not None:
+            self.create_at = make_aware(self.data.created_at)
         self.description = self.data.description
-        self.pushed_at = make_aware(self.data.pushed_at)
+        if self.data.pushed_at is not None:
+            self.pushed_at = make_aware(self.data.pushed_at)
         self.stargazers_count = self.data.stargazers_count
         self.watchers_count = self.data.watchers_count
         self.save()
