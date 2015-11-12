@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import make_aware
 from cache_github.connect import G
 
 
@@ -35,13 +36,13 @@ class GithubUser(models.Model):
         self.avatar = self.data.avatar_url
         self.blog = self.data.blog
         self.company = self.data.company
-        self.create_at = self.data.created_at
+        self.create_at = make_aware(self.data.created_at)
         self.emile = self.data.email
         self.hireable = self.data.hireable
         self.location = self.data.location
         self.name = self.data.name
         self.public_repo_num = self.data.public_repos
-        self.update_at = self.data.updated_at
+        self.update_at = make_aware(self.data.updated_at)
         self.followers_count = self.data.followers
         self.following_count = self.data.following
         self.save()
@@ -93,9 +94,9 @@ class GithubRepo(models.Model):
         self.data = self.get_data(data)
         self.full_name = self.data.full_name
         self.forks_count = self.data.forks_count
-        self.create_at = self.data.created_at
+        self.create_at = make_aware(self.data.created_at)
         self.description = self.data.description
-        self.pushed_at = self.data.pushed_at
+        self.pushed_at = make_aware(self.data.pushed_at)
         self.stargazers_count = self.data.stargazers_count
         self.watchers_count = self.data.watchers_count
         self.save()
