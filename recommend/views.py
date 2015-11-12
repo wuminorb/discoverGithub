@@ -1,9 +1,11 @@
+from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render
 from cache_github.models import GithubRepo, get_user_from_db
 from recommend.models import AlsoLikeRepo
 
 
+@transaction.atomic
 def refresh_also_like_repo(request, full_name, force=False):
     repo = GithubRepo.objects.get(full_name=full_name)
     AlsoLikeRepo.objects.filter(base_repo=repo).delete()
@@ -14,9 +16,8 @@ def refresh_also_like_repo(request, full_name, force=False):
 
     i = 0
     for stargazer in stargazers:
+        print("%i/%i" % (len(stargazers), i))
         i += 1
-        print(len(stargazers))
-        print(i)
         user = get_user_from_db(stargazer.login)
 
         if user.starred.count() == 0:
